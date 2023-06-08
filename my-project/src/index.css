@@ -10,4 +10,12 @@
         height: 100%;
         width: 100%;
     }
+    .scrollbar::-webkit-scrollbar{
+        width: 10px;
+        background-color: rgba(30, 30, 30, 0);
+    }
+    .scrollbar::-webkit-scrollbar-thumb{
+        background-color: rgba(20, 20,20, 0.9);
+        border-radius: 2vh;
+    }
 }
