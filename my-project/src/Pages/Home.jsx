@@ -28,7 +28,7 @@ export function Home() {
 	}
 
 	const onAddToCart = (product) => {
-		dispatch(addToCart(product))
+		dispatch(addToCart({product, quantity: 1}))
 	}
 
 	if(error){
