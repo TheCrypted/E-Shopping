@@ -1,12 +1,15 @@
 import {useEffect, useRef, useState} from "react";
 import {CircularProgress, Rating} from "@mui/material";
 import {Sidebar} from "../Components/Sidebar.jsx";
+import { useDispatch } from "react-redux"
+import {addToCart} from "../features/cartSlice.js";
 
 export function Home() {
 	let [products, setProducts] = useState([])
 	let [showCart, setShowCart] = useState(null)
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
+	const dispatch = useDispatch();
 
 	let highlighted = useRef(null)
 	async function getProducts() {
@@ -22,6 +25,10 @@ export function Home() {
 	}
 	const handleMouseExit = () => {
 		setShowCart(null)
+	}
+
+	const onAddToCart = (product) => {
+		dispatch(addToCart(product))
 	}
 
 	if(error){
@@ -48,7 +55,7 @@ export function Home() {
 									{showCart === product.id &&( <div
 										className="absolute w-full h-[70%] bg-translucentWhite backdrop-blur rounded-t-2xl flex items-center justify-center">
 										<button
-											className="bg-teal-700 text-white font-semibold hover:border-2 hover:drop-shadow-lg text-xl w-1/3 h-1/5 rounded-xl">Add
+											className="bg-teal-700 text-white font-semibold hover:border-2 hover:drop-shadow-lg text-xl w-1/3 h-1/5 rounded-xl" onClick={()=> onAddToCart(product)}>Add
 											to cart
 										</button>
 									</div>)}
