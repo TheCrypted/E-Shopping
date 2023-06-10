@@ -1,12 +1,24 @@
 import {useDispatch, useSelector} from 'react-redux'
 import {Rating, Step, StepLabel, Stepper} from "@mui/material";
 import {addToCart, removeFromCart} from "../features/cartSlice.js";
+import {getCartCost, getCartNumber} from "../Utils/Utils.js";
+import {useState} from "react";
 
 export function Cart() {
-	let { value } = useSelector((state)=> state.cart)
-	let dispatch = useDispatch()
-	let steps = ["Review items", "Confirm details", "Checkout"]
+	let { value } = useSelector((state)=> state.cart);
+	let dispatch = useDispatch();
+	let steps = ["Review items", "Confirm details", "Checkout"];
 	let activeStep = 0;
+	let tax = Math.round(7/100* getCartCost(value));
+	let cartCost = getCartCost(value);
+	let shipping = Math.round(5/100* getCartCost(value));
+	let subtotal = tax + cartCost + shipping;
+	let [showItems, setShowItems] = useState(false);
+
+	const handleClick = () => {
+		setShowItems(!showItems);
+	}
+
 	return (
 		<>
 		<div className="w-full h-full bg-slate-900 p-6 grid grid-cols-[75%_25%] grid-rows-[15%_85%]">
@@ -32,7 +44,7 @@ export function Cart() {
 						<img src={val.image} alt="item image" className="w-full row-span-3 h-full bg-no-repeat bg-contain rounded-l-xl"/>
 						{/*<div style={{backgroundImage: "url(https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg)"}} className="w-full row-span-2 h-full bg-cover rounded-l-xl"></div>*/}
 						<div className="text-white font bold text-2xl pl-4 flex items-end pb-4">{val.title}</div>
-						<div className=" row-span-3 text-teal-500 flex items-center justify-center font-bold text-4xl">${val.price}</div>
+						<div className=" row-span-3 text-teal-600 flex items-center justify-center font-bold text-4xl">${val.price}</div>
 						<div className=" text-gray-500 pl-4 pr-4 text-lg">
 							{description}
 						</div>
@@ -59,23 +71,37 @@ export function Cart() {
 			<div className="bg-teal-800 h-[90%] rounded-2xl ml-4 grid grid-rows-[1fr_4fr_1fr] drop-shadow-xl">
 				<button className="m-4 bg-yellow-800 text-white text-2xl rounded-xl hover:bg-amber-600 font-semibold drop-shadow-lg transition-colors duration-300">Place Order</button>
 				<div className="text-white">
-					<div className="grid grid-cols-2 pl-4 pr-4 pb-2">
-						Items(2): <p className="text-right">139.00$</p>
+					<div className="grid grid-cols-2 pl-4 pr-4 pb-2 hover:text-lg  hover:cursor-pointer transition-all duration-300" onClick={() => {
+						setShowItems(!showItems);}
+					}>
+						↓ Items({getCartNumber(value)}): <p className="text-right">${cartCost}</p>
+					</div>
+					{ showItems &&
+						value.map((valu) => {
+							let val = valu.product
+							let title = val.title.length < 23 ? val.title : val.title.slice(0, 23)+"..."
+							return (
+								<div className=" relative left-[15%] mb-1 h-[8%] w-[85%] pl-2 border-l-2 pr-4 grid grid-cols-[70%_30%] text-teal-400 items-center">
+									{title} <p className="text-right">${val.price} x {valu.quantity}</p>
+								</div>
+							)
+						})
+					}
+
+					<div className="  grid grid-cols-2 pl-4 pr-4 pb-2 pt-3">
+						Shipping and Handling: <p className="text-right">${shipping}</p>
 					</div>
 					<div className="grid grid-cols-2 pl-4 pr-4 pb-2">
-						Shipping and Handling: <p className="text-right">9.04$</p>
+						Total before tax: <p className="text-right">${cartCost}</p>
 					</div>
 					<div className="grid grid-cols-2 pl-4 pr-4 pb-2">
-						Total before tax: <p className="text-right">139$</p>
-					</div>
-					<div className="grid grid-cols-2 pl-4 pr-4 pb-2">
-						Estimated tax amount: <p className="text-right">8.99$</p>
+						Estimated tax amount: <p className="text-right">${tax}</p>
 					</div>
 				</div>
 
 				<div className="border-t-2 border-slate-900">
 					<div className="grid grid-cols-2 p-4 pt-7 text-white text-xl ">
-						Subtotal: <p className="text-right">$152.99</p>
+						Subtotal: <p className="text-right">${subtotal}</p>
 					</div>
 				</div>
 			</div>

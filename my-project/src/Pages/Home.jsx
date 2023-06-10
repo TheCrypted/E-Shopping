@@ -42,7 +42,7 @@ export function Home() {
 	return (
 		<>
 			<Sidebar />
-			<div style={{backgroundImage: `url("https://storage.needpix.com/rsynced_images/rainbow-wallpaper.jpg")`}} className=" bg-cover h-full w-3/4 overflow-x-hidden scrollbar">
+			<div style={{backgroundImage: `url("https://c0.wallpaperflare.com/preview/715/978/572/sweden-lule%C3%A5-fog-tranquil.jpg")`}} className="bg-slate-800 bg-cover h-full w-3/4 overflow-x-hidden scrollbar">
 			<div className="w-full h-full bg-fixed bg-cover flex flex-wrap gap-4 ml-4 mt-4">
 				{
 					products.map((product) => {
