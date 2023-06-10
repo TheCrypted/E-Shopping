@@ -10,7 +10,7 @@ import {Cart} from "./Pages/Cart.jsx";
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<Layout />}>
-            <Route index path="/Home" element={<Home />}></Route>
+            <Route index  element={<Home />}></Route>
             <Route path="/Login" element={<Login />}></Route>
             <Route path="/Cart" element={<Cart />}></Route>
         </Route>

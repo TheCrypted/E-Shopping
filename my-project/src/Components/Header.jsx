@@ -8,13 +8,13 @@ export function Header() {
 	let {value} = useSelector((state)=> state.cart)
 	const navigate = useNavigate()
 	const handleButtonClick = () => {
-		navigate("/Login");
+		navigate("/");
 	}
 
 	return (
 		<>
 		<div className="w-full h-[8%] bg-teal-800 grid grid-cols-[15%_70%_15%]">
-			<Link to="/Home" className="text-white flex items-center justify-center text-3xl font-bold transition-colors duration-200 ease-out hover:bg-teal-700 hover:cursor-pointer">
+			<Link to="/" className="text-white flex items-center justify-center text-3xl font-bold transition-colors duration-200 ease-out hover:bg-teal-700 hover:cursor-pointer">
 				TheCrypted.com
 			</Link>
 			<div className="flex items-center justify-center">
