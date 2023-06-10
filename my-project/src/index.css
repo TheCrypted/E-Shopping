@@ -18,4 +18,14 @@
         background-color: rgba(20, 20,20, 0.9);
         border-radius: 2vh;
     }
+    fieldset{
+        border: none !important;
+        outline: none !important;
+    }
+    input {
+        color: white !important;
+    }
+    svg {
+        color: white;
+    }
 }

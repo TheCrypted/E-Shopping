@@ -1,25 +1,22 @@
 import {useEffect, useRef, useState} from "react";
 import {CircularProgress, Rating} from "@mui/material";
 import {Sidebar} from "../Components/Sidebar.jsx";
-import { useDispatch } from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 import {addToCart} from "../features/cartSlice.js";
+import {getProducts} from "../features/productSlice.js";
 
 export function Home() {
-	let [products, setProducts] = useState([])
+	let state = useSelector(state => state.products)
+	let {value: products, loading} = state ?? {}
 	let [showCart, setShowCart] = useState(null)
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const dispatch = useDispatch();
 
 	let highlighted = useRef(null)
-	async function getProducts() {
-		const response = await fetch('https://fakestoreapi.com/products')
-			.then(response => response.json())
-			.then(json => setProducts(json))
+	if(!products?.length){
+		dispatch(getProducts())
 	}
-	useEffect(()=>{
-		getProducts().catch(error => {setError(error)})
-	},[])
 	const handleMouseEnter = (id) => {
 		setShowCart(id)
 	}
