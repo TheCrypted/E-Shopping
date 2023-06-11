@@ -4,9 +4,12 @@ import {Sidebar} from "../Components/Sidebar.jsx";
 import {useDispatch, useSelector} from "react-redux"
 import {addToCart} from "../features/cartSlice.js";
 import {getProducts} from "../features/productSlice.js";
+import {useSearchParams} from "react-router-dom"
 
 export function Home() {
 	let state = useSelector(state => state.products)
+	let [searchParams] = useSearchParams()
+	let category = searchParams.get("category")
 	let {value: products, loading} = state ?? {}
 	let [showCart, setShowCart] = useState(null)
 	const [isLoading, setIsLoading] = useState(true);
@@ -36,13 +39,15 @@ export function Home() {
 		)
 	}
 
+	let filteredProducts = category ? products.filter(product => product.category === category) : products;
+
 	return (
 		<>
-			<Sidebar />
+			<Sidebar/>
 			<div style={{backgroundImage: `url("https://c0.wallpaperflare.com/preview/715/978/572/sweden-lule%C3%A5-fog-tranquil.jpg")`}} className="bg-slate-800 bg-cover h-full w-3/4 overflow-x-hidden scrollbar">
 			<div className="w-full h-full bg-fixed bg-cover flex flex-wrap gap-4 ml-4 mt-4">
 				{
-					products.map((product) => {
+					filteredProducts.map((product) => {
 						let title = product.title.slice(0, 45) === product.title ? product.title : product.title.slice(0, 45) + "..."
 						return (
 							<div key={product.id} className=" shrink-0 rounded-2xl w-[31.6%] h-3/5 bg-translucentWhite drop-shadow-xl backdrop-blur-xl grid grid-rows-[70%_20%_10%] grid-cols-[30%_70%] place-items-center">
