@@ -10,6 +10,7 @@ export function Home() {
 	let state = useSelector(state => state.products)
 	let [searchParams] = useSearchParams()
 	let category = searchParams.get("category")
+	let searchItem = searchParams.get("searchItem")
 	let {value: products, loading} = state ?? {}
 	let [showCart, setShowCart] = useState(null)
 	const [isLoading, setIsLoading] = useState(true);
@@ -40,6 +41,7 @@ export function Home() {
 	}
 
 	let filteredProducts = category ? products.filter(product => product.category === category) : products;
+	filteredProducts = searchItem ? filteredProducts.filter(product => product.title.toLowerCase().includes(searchItem.toLowerCase())) : filteredProducts
 
 	return (
 		<>

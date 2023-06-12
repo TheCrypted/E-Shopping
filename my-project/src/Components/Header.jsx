@@ -14,6 +14,14 @@ export function Header() {
 		navigate("/");
 	}
 
+	const handleLoginClick = () => {
+		navigate("/Login")
+	}
+
+	const handleChange = (searchItem) => {
+		navigate("/?searchItem=" + searchItem.label);
+	}
+
 	return (
 		<>
 		<div className="w-full h-[8%] bg-teal-800 grid grid-cols-[15%_70%_15%]">
@@ -23,9 +31,18 @@ export function Header() {
 			<div className="flex items-center justify-center">
 				{/*<input type="text" className="text-xl bg-slate-900 text-white focus:outline-none w-4/6 rounded-2xl h-2/3 pl-4 transition-width duration-500 ease focus:w-5/6 focus:drop-shadow-2xl" placeholder="Search Products"/>*/}
 				<Autocomplete
+					onChange={(e, value)=>{
+						if(value) {
+							handleChange(value)
+						} else {
+							navigate("/")
+						}
+					}
+					}
 					disablePortal
 					id="combo-box-demo"
 					options={Array.from(products, prod => ({id:prod.id, label:prod.title}))}
+					isOptionEqualToValue={(option, value) => option.id === value.id}
 					sx={{ width: 2/3, backgroundColor: "#0f172a", borderRadius: 10, '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
 							border: 'none',
 						}}}
@@ -41,7 +58,7 @@ export function Header() {
 						}}/>
 					</Badge>
 				</IconButton>
-				<button onClick={handleButtonClick} className="w-full h-full text-white text-2xl font-semibold  transition-colors duration-200 ease-out hover:bg-teal-700">Login</button>
+				<button onClick={handleLoginClick} className="w-full h-full text-white text-2xl font-semibold  transition-colors duration-200 ease-out hover:bg-teal-700">Login</button>
 			</div>
 		</div>
 		</>

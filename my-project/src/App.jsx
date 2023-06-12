@@ -7,6 +7,8 @@ import {Layout} from "./Components/Layout.jsx";
 import {Home} from "./Pages/Home.jsx";
 import {Login} from "./Pages/Login.jsx";
 import {Cart} from "./Pages/Cart.jsx";
+import AuthProvider from './firebase/auth.jsx';
+
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<Layout />}>
@@ -20,7 +22,9 @@ function App() {
   const [count, setCount] = useState(0)
 
   return(
-      <RouterProvider router={router} />
+    <AuthProvider>
+        <RouterProvider router={router} />
+    </AuthProvider>
   )
 }
 
