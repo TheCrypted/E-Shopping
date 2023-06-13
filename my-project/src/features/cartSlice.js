@@ -23,9 +23,12 @@ const cartSlice = createSlice({
                 } else {
                     state.value = state.value.filter(item => item.product.id !== product.id);
                 }
+            },
+            clearCart: (state)=>{
+                state.value=[]
             }
     }
     }
 )
-export const {addToCart, removeFromCart} = cartSlice.actions;
+export const {addToCart, removeFromCart, clearCart} = cartSlice.actions;
 export default cartSlice.reducer;

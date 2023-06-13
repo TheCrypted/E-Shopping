@@ -4,7 +4,8 @@ import {Sidebar} from "../Components/Sidebar.jsx";
 import {useDispatch, useSelector} from "react-redux"
 import {addToCart} from "../features/cartSlice.js";
 import {getProducts} from "../features/productSlice.js";
-import {useSearchParams} from "react-router-dom"
+import {useNavigate, useSearchParams} from "react-router-dom"
+import {useAuth} from "../firebase/Auth.jsx";
 
 export function Home() {
 	let state = useSelector(state => state.products)
@@ -16,6 +17,8 @@ export function Home() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const dispatch = useDispatch();
+	const {user} = useAuth()
+	const navigate = useNavigate()
 
 	let highlighted = useRef(null)
 	if(!products?.length){
@@ -27,6 +30,7 @@ export function Home() {
 	const handleMouseExit = () => {
 		setShowCart(null)
 	}
+
 
 	const onAddToCart = (product) => {
 		dispatch(addToCart({product, quantity: 1}))
@@ -59,7 +63,13 @@ export function Home() {
 									{showCart === product.id &&( <div
 										className="absolute w-full h-[70%] bg-translucentWhite backdrop-blur rounded-t-2xl flex items-center justify-center">
 										<button
-											className="bg-teal-700 text-white font-semibold hover:border-2 hover:drop-shadow-lg text-xl w-1/3 h-1/5 rounded-xl" onClick={()=> onAddToCart(product)}>Add
+											className="bg-teal-700 text-white font-semibold hover:border-2 hover:drop-shadow-lg text-xl w-1/3 h-1/5 rounded-xl" onClick={()=> {
+												if (user) {
+													onAddToCart(product)
+												} else {
+													navigate("/Login")
+												}
+										}}>Add
 											to cart
 										</button>
 									</div>)}
